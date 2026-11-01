@@ -1,0 +1,509 @@
+--[[  
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+    🔥 OFFICIAL EXECUTOR v5.0 — COMPACT & ADMIN COMMANDS
+    Designed by: Brick_sure | Workspace: Secured & Connected
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+]]  
+
+local CoreGui = game:GetService("CoreGui")
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+
+if CoreGui:FindFirstChild("AdminExecutorGui") then
+    CoreGui.AdminExecutorGui:Destroy()
+end
+
+local GuiV1 = Instance.new("ScreenGui")
+GuiV1.Name = "AdminExecutorGui"
+GuiV1.Parent = CoreGui
+GuiV1.ResetOnSpawn = false
+
+-- MAIN FRAME (DIPERKECIL UKURANNYA)
+local MainFrame = Instance.new("Frame")
+MainFrame.Name = "MainFrame"
+MainFrame.Parent = GuiV1
+MainFrame.BackgroundColor3 = Color3.fromRGB(12, 10, 18)
+MainFrame.BackgroundTransparency = 0.25
+MainFrame.BorderSizePixel = 0
+MainFrame.Position = UDim2.new(0.3, 0, 0.25, 0)
+MainFrame.Size = UDim2.new(0, 480, 0, 280) -- Ukuran lebih kompak & pas di layar HP
+MainFrame.Active = true
+MainFrame.Selectable = true
+MainFrame.Draggable = true
+
+local MainCorner = Instance.new("UICorner")
+MainCorner.CornerRadius = UDim.new(0, 8)
+MainCorner.Parent = MainFrame
+
+local UIStroke = Instance.new("UIStroke")
+UIStroke.Parent = MainFrame
+UIStroke.Color = Color3.fromRGB(160, 50, 255)
+UIStroke.Transparency = 0.3
+UIStroke.Thickness = 1.5
+
+-- TITLE BAR
+local TitleBar = Instance.new("Frame")
+TitleBar.Name = "TitleBar"
+TitleBar.Parent = MainFrame
+TitleBar.BackgroundColor3 = Color3.fromRGB(8, 6, 12)
+TitleBar.BackgroundTransparency = 0.2
+TitleBar.BorderSizePixel = 0
+TitleBar.Size = UDim2.new(1, 0, 0, 30)
+
+local TitleCorner = Instance.new("UICorner")
+TitleCorner.CornerRadius = UDim.new(0, 8)
+TitleCorner.Parent = TitleBar
+
+local TextLabel = Instance.new("TextLabel")
+TextLabel.Parent = TitleBar
+TextLabel.BackgroundTransparency = 1
+TextLabel.Position = UDim2.new(0.08, 0, 0, 0)
+TextLabel.Size = UDim2.new(0.7, 0, 1, 0)
+TextLabel.Font = Enum.Font.GothamBold
+TextLabel.Text = "⚡ EXECUTOR v5.0 + ADMIN COMMANDS"
+TextLabel.TextColor3 = Color3.fromRGB(235, 215, 255)
+TextLabel.TextSize = 11
+TextLabel.TextXAlignment = Enum.TextXAlignment.Left
+
+local ImageLabel = Instance.new("ImageLabel")
+ImageLabel.Parent = TitleBar
+ImageLabel.BackgroundTransparency = 1
+ImageLabel.Position = UDim2.new(0.012, 0, 0.12, 0)
+ImageLabel.Size = UDim2.new(0, 22, 0, 22)
+ImageLabel.Image = "https://www.roblox.com/headshot-thumbnail/image?userId=8521418312&width=420&height=420&format=png"
+ImageLabel.ScaleType = Enum.ScaleType.Fit
+
+local AvatarCorner = Instance.new("UICorner")
+AvatarCorner.CornerRadius = UDim.new(1, 0)
+AvatarCorner.Parent = ImageLabel
+
+-- NOTIFICATION SYSTEM
+local NotifyLabel = Instance.new("TextLabel")
+NotifyLabel.Name = "NotifyLabel"
+NotifyLabel.Parent = MainFrame
+NotifyLabel.BackgroundColor3 = Color3.fromRGB(45, 15, 75)
+NotifyLabel.BackgroundTransparency = 0.2
+NotifyLabel.Position = UDim2.new(0.02, 0, 0.12, 0)
+NotifyLabel.Size = UDim2.new(0.56, 0, 0, 20)
+NotifyLabel.Font = Enum.Font.GothamBold
+NotifyLabel.Text = "✨ Ready!"
+NotifyLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+NotifyLabel.TextSize = 9
+NotifyLabel.Visible = false
+
+local NotifyCorner = Instance.new("UICorner")
+NotifyCorner.CornerRadius = UDim.new(0, 4)
+NotifyCorner.Parent = NotifyLabel
+
+local function ShowNotification(text, color)
+    NotifyLabel.Text = text
+    NotifyLabel.BackgroundColor3 = color or Color3.fromRGB(45, 15, 75)
+    NotifyLabel.Visible = true
+    task.delay(2.5, function()
+        NotifyLabel.Visible = false
+    end)
+end
+
+-- SOURCE FRAME (Editor Teks Utama)
+local SourceFrame = Instance.new("Frame")
+SourceFrame.Name = "SourceFrame"
+SourceFrame.Parent = MainFrame
+SourceFrame.BackgroundColor3 = Color3.fromRGB(8, 6, 12)
+SourceFrame.BackgroundTransparency = 0.4
+SourceFrame.BorderSizePixel = 0
+SourceFrame.Position = UDim2.new(0.02, 0, 0.18, 0)
+SourceFrame.Size = UDim2.new(0.56, 0, 0.60, 0)
+
+local SourceCorner = Instance.new("UICorner")
+SourceCorner.CornerRadius = UDim.new(0, 6)
+SourceCorner.Parent = SourceFrame
+
+local SourceScrolling = Instance.new("ScrollingFrame")
+SourceScrolling.Name = "SourceScrolling"
+SourceScrolling.Parent = SourceFrame
+SourceScrolling.Active = true
+SourceScrolling.BackgroundTransparency = 1
+SourceScrolling.BorderSizePixel = 0
+SourceScrolling.Size = UDim2.new(1, 0, 1, 0)
+SourceScrolling.CanvasSize = UDim2.new(0, 0, 5, 0)
+SourceScrolling.ScrollBarThickness = 3
+
+local Input = Instance.new("TextBox")
+Input.Name = "Input"
+Input.Parent = SourceScrolling
+Input.BackgroundTransparency = 1
+Input.BorderSizePixel = 0
+Input.Size = UDim2.new(1, 0, 5, 0)
+Input.ZIndex = 5
+Input.ClearTextOnFocus = false
+Input.Font = Enum.Font.Code
+Input.MultiLine = true
+Input.TextEditable = true
+Input.RichText = false
+Input.TextWrapped = false
+Input.CursorPosition = -1
+Input.PlaceholderText = "-- Type or select command..."
+Input.PlaceholderColor3 = Color3.fromRGB(120, 100, 150)
+Input.Text = ""
+Input.TextColor3 = Color3.fromRGB(240, 230, 255)
+Input.TextSize = 11
+Input.TextXAlignment = Enum.TextXAlignment.Left
+Input.TextYAlignment = Enum.TextYAlignment.Top
+
+-- =================================================================
+-- PANEL KANAN: TAB 1 (SAVE MANAGER) & TAB 2 (ADMIN COMMANDS)
+-- =================================================================
+local RightPanel = Instance.new("Frame")
+RightPanel.Name = "RightPanel"
+RightPanel.Parent = MainFrame
+RightPanel.BackgroundTransparency = 1
+RightPanel.Position = UDim2.new(0.60, 0, 0.18, 0)
+RightPanel.Size = UDim2.new(0.38, 0, 0.60, 0)
+
+-- --- TAB 1: SAVE MANAGER ---
+local SaveManagerFrame = Instance.new("Frame")
+SaveManagerFrame.Name = "SaveManagerFrame"
+SaveManagerFrame.Parent = RightPanel
+SaveManagerFrame.BackgroundColor3 = Color3.fromRGB(10, 8, 16)
+SaveManagerFrame.BackgroundTransparency = 0.4
+SaveManagerFrame.BorderSizePixel = 0
+SaveManagerFrame.Size = UDim2.new(1, 0, 1, 0)
+SaveManagerFrame.Visible = true
+
+local SMCorner = Instance.new("UICorner")
+SMCorner.CornerRadius = UDim.new(0, 6)
+SMCorner.Parent = SaveManagerFrame
+
+local SaveNameBox = Instance.new("TextBox")
+SaveNameBox.Name = "SaveNameBox"
+SaveNameBox.Parent = SaveManagerFrame
+SaveNameBox.BackgroundColor3 = Color3.fromRGB(22, 16, 35)
+SaveNameBox.BackgroundTransparency = 0.3
+SaveNameBox.BorderSizePixel = 0
+SaveNameBox.Position = UDim2.new(0.04, 0, 0.04, 0)
+SaveNameBox.Size = UDim2.new(0.68, 0, 0.15, 0)
+SaveNameBox.Font = Enum.Font.Gotham
+SaveNameBox.PlaceholderText = "Filename..."
+SaveNameBox.PlaceholderColor3 = Color3.fromRGB(140, 120, 170)
+SaveNameBox.Text = ""
+SaveNameBox.TextColor3 = Color3.fromRGB(255, 255, 255)
+SaveNameBox.TextSize = 10
+
+local NameBoxCorner = Instance.new("UICorner")
+NameBoxCorner.CornerRadius = UDim.new(0, 4)
+NameBoxCorner.Parent = SaveNameBox
+
+local SaveBtn = Instance.new("TextButton")
+SaveBtn.Name = "SaveBtn"
+SaveBtn.Parent = SaveManagerFrame
+SaveBtn.BackgroundColor3 = Color3.fromRGB(140, 40, 240)
+SaveBtn.BackgroundTransparency = 0.1
+SaveBtn.BorderSizePixel = 0
+SaveBtn.Position = UDim2.new(0.75, 0, 0.04, 0)
+SaveBtn.Size = UDim2.new(0.21, 0, 0.15, 0)
+SaveBtn.Font = Enum.Font.GothamBold
+SaveBtn.Text = "Save"
+SaveBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+SaveBtn.TextSize = 10
+
+local SaveBtnCorner = Instance.new("UICorner")
+SaveBtnCorner.CornerRadius = UDim.new(0, 4)
+SaveBtnCorner.Parent = SaveBtn
+
+local SaveList = Instance.new("ScrollingFrame")
+SaveList.Name = "SaveList"
+SaveList.Parent = SaveManagerFrame
+SaveList.BackgroundTransparency = 1
+SaveList.BorderSizePixel = 0
+SaveList.Position = UDim2.new(0.04, 0, 0.23, 0)
+SaveList.Size = UDim2.new(0.92, 0, 0.73, 0)
+SaveList.CanvasSize = UDim2.new(0, 0, 0, 0)
+SaveList.ScrollBarThickness = 3
+SaveList.ScrollBarImageColor3 = Color3.fromRGB(140, 40, 240)
+
+local SaveLayout = Instance.new("UIListLayout")
+SaveLayout.Parent = SaveList
+SaveLayout.Padding = UDim.new(0, 3)
+
+-- --- TAB 2: ADMIN COMMANDS PANEL ---
+local AdminFrame = Instance.new("ScrollingFrame")
+AdminFrame.Name = "AdminFrame"
+AdminFrame.Parent = RightPanel
+AdminFrame.BackgroundColor3 = Color3.fromRGB(10, 8, 16)
+AdminFrame.BackgroundTransparency = 0.2
+AdminFrame.BorderSizePixel = 0
+AdminFrame.Size = UDim2.new(1, 0, 1, 0)
+AdminFrame.CanvasSize = UDim2.new(0, 0, 0, 200)
+AdminFrame.ScrollBarThickness = 3
+AdminFrame.ScrollBarImageColor3 = Color3.fromRGB(140, 40, 240)
+AdminFrame.Visible = false
+
+local AdminCorner = Instance.new("UICorner")
+AdminCorner.CornerRadius = UDim.new(0, 6)
+AdminCorner.Parent = AdminFrame
+
+local AdminLayout = Instance.new("UIListLayout")
+AdminLayout.Parent = AdminFrame
+AdminLayout.Padding = UDim.new(0, 4)
+AdminLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
+
+local function createAdminCmdBtn(text, scriptCode)
+    local btn = Instance.new("TextButton")
+    btn.Size = UDim2.new(0.92, 0, 0, 26)
+    btn.BackgroundColor3 = Color3.fromRGB(45, 20, 75)
+    btn.BorderSizePixel = 0
+    btn.Font = Enum.Font.GothamBold
+    btn.Text = text
+    btn.TextColor3 = Color3.fromRGB(230, 210, 255)
+    btn.TextSize = 10
+    btn.Parent = AdminFrame
+
+    local corner = Instance.new("UICorner")
+    corner.CornerRadius = UDim.new(0, 4)
+    corner.Parent = btn
+
+    btn.MouseButton1Click:Connect(function()
+        Input.Text = scriptCode
+        ShowNotification("⚡ Command Loaded!", Color3.fromRGB(140, 40, 240))
+    end)
+end
+
+-- Daftar Admin Commands Cepat
+createAdminCmdBtn("🚀 Speed Boost (50)", 'game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 50')
+createAdminCmdBtn("🦘 High Jump (100)", 'game.Players.LocalPlayer.Character.Humanoid.JumpPower = 100')
+createAdminCmdBtn("👻 Noclip (Walkthrough)", [[
+local noclip = true
+game:GetService("RunService").Stepped:Connect(function()
+    if noclip and game.Players.LocalPlayer.Character then
+        for _, v in pairs(game.Players.LocalPlayer.Character:GetDescendants()) do
+            if v:IsA("BasePart") then v.CanCollide = false end
+        end
+    end
+end)
+print("Noclip Enabled!")
+]])createAdminCmdBtn("🌙 Infinite Yield (Admin Hub)", 'loadstring(game:HttpGet("https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source"))()')
+createAdminCmdBtn("🦅 Fly (Tekan E untuk Aktif)", 'loadstring(game:HttpGet("https://raw.githubusercontent.com/XNEOFF/FlyGuiV3/main/FlyGuiV3.txt"))()')
+createAdminCmdBtn("👁️ ESP Players (Lihat Orang)", 'loadstring(game:HttpGet("https://raw.githubusercontent.com/ic3w0lf22/Unnamed-ESP/master/UnnamedESP.lua"))()')
+createAdminCmdBtn("🧱 Rejoin Game (Masuk Ulang)", 'game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, game.JobId, game.Players.LocalPlayer)')
+createAdminCmdBtn("🪂 Binds / Low Gravity", 'game.Workspace.Gravity = 50 print("Low Gravity Enabled!")')
+createAdminCmdBtn("🌍 Normal Gravity (9.8)", 'game.Workspace.Gravity = 196.2 print("Gravity Reset!")')
+createAdminCmdBtn("💡 Fullbright (Anti Dark)", [[
+for _, v in pairs(game:GetService("Lighting"):GetChildren()) do v:Destroy() end
+game:GetService("Lighting").Brightness = 2
+game:GetService("Lighting").ClockTime = 14
+game:GetService("Lighting").GlobalShadows = false
+print("Fullbright Enabled!")
+]])
+createAdminCmdBtn("🔄 Reset Speed/Jump", 'game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 16 game.Players.LocalPlayer.Character.Humanoid.JumpPower = 50')
+
+-- =================================================================
+-- LOGIKA SAVE SCRIPT LOKAL
+-- =================================================================
+local FOLDER_NAME = "AdminExecutor_Workspace/"
+if makefolder then makefolder(FOLDER_NAME) end
+local savedScripts = {}
+
+local function refreshSaveList()
+    for _, child in pairs(SaveList:GetChildren()) do
+        if child:IsA("Frame") then child:Destroy() end
+    end
+
+    local count = 0
+    for name, code in pairs(savedScripts) do
+        count = count + 1
+        local itemFrame = Instance.new("Frame")
+        itemFrame.Size = UDim2.new(1, -4, 0, 22)
+        itemFrame.BackgroundColor3 = Color3.fromRGB(30, 22, 48)
+        itemFrame.BackgroundTransparency = 0.3
+        itemFrame.BorderSizePixel = 0
+        itemFrame.Parent = SaveList
+
+        local itemCorner = Instance.new("UICorner")
+        itemCorner.CornerRadius = UDim.new(0, 3)
+        itemCorner.Parent = itemFrame
+
+        local loadBtn = Instance.new("TextButton")
+        loadBtn.Size = UDim2.new(0.75, 0, 1, 0)
+        loadBtn.BackgroundTransparency = 1
+        loadBtn.Font = Enum.Font.GothamSemibold
+        loadBtn.Text = "  " .. name
+        loadBtn.TextColor3 = Color3.fromRGB(220, 200, 255)
+        loadBtn.TextSize = 10
+        loadBtn.TextXAlignment = Enum.TextXAlignment.Left
+        loadBtn.Parent = itemFrame
+
+        loadBtn.MouseButton1Click:Connect(function()
+            Input.Text = code
+            SaveNameBox.Text = name
+            ShowNotification("📂 Loaded: " .. name, Color3.fromRGB(40, 100, 180))
+        end)
+
+        local delBtn = Instance.new("TextButton")
+        delBtn.Size = UDim2.new(0.22, 0, 0.8, 0)
+        delBtn.Position = UDim2.new(0.76, 0, 0.1, 0)
+        delBtn.BackgroundColor3 = Color3.fromRGB(180, 40, 70)
+        delBtn.BorderSizePixel = 0
+        delBtn.Font = Enum.Font.GothamBold
+        delBtn.Text = "X"
+        delBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+        delBtn.TextSize = 9
+        delBtn.Parent = itemFrame
+
+        local delCorner = Instance.new("UICorner")
+        delCorner.CornerRadius = UDim.new(0, 3)
+        delCorner.Parent = delBtn
+
+        delBtn.MouseButton1Click:Connect(function()
+            savedScripts[name] = nil
+            if delfile then pcall(delfile, FOLDER_NAME .. name .. ".lua") end
+            refreshSaveList()
+            ShowNotification("🗑️ Deleted: " .. name, Color3.fromRGB(180, 40, 70))
+        end)
+    end
+    SaveList.CanvasSize = UDim2.new(0, 0, 0, count * 25)
+end
+
+if listfiles and readfile then
+    local success, files = pcall(listfiles, FOLDER_NAME)
+    if success then
+        for _, path in pairs(files) do
+            local fileName = path:match("([^/]+)%.lua$") or path:match("([^\\]+)%.lua$")
+            if fileName then savedScripts[fileName] = readfile(path) end
+        end
+    end
+end
+refreshSaveList()
+
+SaveBtn.MouseButton1Click:Connect(function()
+    local name = SaveNameBox.Text
+    local code = Input.Text
+    if name ~= "" and code ~= "" then
+        savedScripts[name] = code
+        if writefile then pcall(writefile, FOLDER_NAME .. name .. ".lua", code) end
+        refreshSaveList()
+        ShowNotification("💾 Saved permanently!", Color3.fromRGB(40, 150, 80))
+    else
+        ShowNotification("⚠️ Name/Script empty!", Color3.fromRGB(180, 120, 40))
+    end
+end)
+
+-- =================================================================
+-- TOMBOL AKSI BAWAH & NAVIGASI TAB
+-- =================================================================
+local function createAdminButton(name, text, posX, sizeX, color)
+    local btn = Instance.new("TextButton")
+    btn.Name = name
+    btn.Parent = MainFrame
+    btn.BackgroundColor3 = color
+    btn.BackgroundTransparency = 0.15
+    btn.BorderSizePixel = 0
+    btn.Position = UDim2.new(posX, 0, 0.81, 0)
+    btn.Size = UDim2.new(sizeX, 0, 0.15, 0)
+    btn.Font = Enum.Font.GothamBold
+    btn.Text = text
+    btn.TextColor3 = Color3.fromRGB(255, 255, 255)
+    btn.TextSize = 10
+
+    local corner = Instance.new("UICorner")
+    corner.CornerRadius = UDim.new(0, 4)
+    corner.Parent = btn
+
+    return btn
+end
+
+local ExecuteBtn = createAdminButton("ExecuteBtn", "Execute", 0.02, 0.22, Color3.fromRGB(140, 40, 240))
+local ClearBtn = createAdminButton("ClearBtn", "Clear", 0.25, 0.14, Color3.fromRGB(35, 26, 52))
+local ResetBtn = createAdminButton("ResetBtn", "Reset", 0.40, 0.15, Color3.fromRGB(35, 26, 52))
+local TabSavedBtn = createAdminButton("TabSavedBtn", "Saved", 0.57, 0.14, Color3.fromRGB(50, 30, 90))
+local TabAdminBtn = createAdminButton("TabAdminBtn", "Commands", 0.72, 0.16, Color3.fromRGB(90, 30, 160))
+local ResetAllBtn = createAdminButton("ResetAllBtn", "All", 0.89, 0.09, Color3.fromRGB(180, 40, 70))
+
+-- Sistem Ganti Tab
+TabSavedBtn.MouseButton1Click:Connect(function()
+    SaveManagerFrame.Visible = true
+    AdminFrame.Visible = false
+    ShowNotification("📁 Saved Scripts Tab", Color3.fromRGB(50, 30, 90))
+end)
+
+TabAdminBtn.MouseButton1Click:Connect(function()
+    SaveManagerFrame.Visible = false
+    AdminFrame.Visible = true
+    ShowNotification("⚡ Admin Commands Tab", Color3.fromRGB(140, 40, 240))
+end)
+
+-- ICON TOMBOL MENGAMBANG
+local IconBtn = Instance.new("TextButton")
+IconBtn.Name = "IconBtn"
+IconBtn.Parent = GuiV1
+IconBtn.BackgroundColor3 = Color3.fromRGB(140, 40, 240)
+IconBtn.BackgroundTransparency = 0.1
+IconBtn.BorderSizePixel = 0
+IconBtn.Position = UDim2.new(0.48, 0, 0.02, 0)
+IconBtn.Size = UDim2.new(0, 32, 0, 32)
+IconBtn.Text = ""
+IconBtn.Active = true
+IconBtn.Selectable = true
+IconBtn.Draggable = true
+
+local IconCorner = Instance.new("UICorner")
+IconCorner.CornerRadius = UDim.new(1, 0)
+IconCorner.Parent = IconBtn
+
+local ImageLabel_2 = Instance.new("ImageLabel")
+ImageLabel_2.Parent = IconBtn
+ImageLabel_2.BackgroundTransparency = 1
+ImageLabel_2.Position = UDim2.new(0.1, 0, 0.1, 0)
+ImageLabel_2.Size = UDim2.new(0.8, 0, 0.8, 0)
+ImageLabel_2.Image = "https://www.roblox.com/headshot-thumbnail/image?userId=8521418312&width=420&height=420&format=png"
+
+local ImgCorner = Instance.new("UICorner")
+ImgCorner.CornerRadius = UDim.new(1, 0)
+ImgCorner.Parent = ImageLabel_2
+
+-- =================================================================
+-- EVENT EXECUTOR UTAMA
+-- =================================================================
+ExecuteBtn.MouseButton1Click:Connect(function()
+    local code = Input.Text
+    local func, err = loadstring(code)
+    if not func then
+        ShowNotification("❌ Syntax Error!", Color3.fromRGB(180, 40, 70))
+        warn(err)
+        return
+    end
+
+    local success, runtimeErr = pcall(func)
+    if success then
+        ShowNotification("⚡ Executed Successfully!", Color3.fromRGB(40, 150, 80))
+    else
+        ShowNotification("⚠️ Runtime Error!", Color3.fromRGB(180, 120, 40))
+        warn(runtimeErr)
+    end
+end)
+
+ClearBtn.MouseButton1Click:Connect(function()
+    Input.Text = ""
+    ShowNotification("🧹 Cleared!", Color3.fromRGB(70, 70, 90))
+end)
+
+ResetBtn.MouseButton1Click:Connect(function()
+    if LocalPlayer.Character then
+        LocalPlayer.Character:BreakJoints()
+        ShowNotification("🔄 Character Reset!", Color3.fromRGB(120, 50, 150))
+    end
+end)
+
+ResetAllBtn.MouseButton1Click:Connect(function()
+    for _, plr in pairs(Players:GetPlayers()) do
+        if plr.Character then
+            plr.Character:BreakJoints()
+        end
+    end
+    ShowNotification("💥 All Players Reset!", Color3.fromRGB(180, 40, 70))
+end)
+
+IconBtn.MouseButton1Click:Connect(function()
+    MainFrame.Visible = not MainFrame.Visible
+end)
+
+ShowNotification("🚀 Admin Executor Loaded by Brick_sure!", Color3.fromRGB(140, 40, 240))
